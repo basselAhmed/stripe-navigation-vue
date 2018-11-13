@@ -165,14 +165,41 @@ export default {
       activeDropdownItems.forEach(item => item.classList.remove("active"));
       const activeNavItems = this.$refs.mainNav.querySelectorAll(".active");
       activeNavItems.forEach(item => item.classList.remove("active"));
-      selectedDropdown.classList.add("active");
       item.classList.add("active");
+      const children = [...selectedDropdown.parentNode.children];
+      const prev = children.filter(
+        (el, index) => index < children.indexOf(selectedDropdown)
+      );
+      const after = children.filter(
+        (el, index) => index > children.indexOf(selectedDropdown)
+      );
+      selectedDropdown.classList.add("active");
+      selectedDropdown.classList.remove("move-left");
+      selectedDropdown.classList.remove("move-right");
+      if (prev.length > 0) {
+        prev.forEach(el => {
+          el.classList.add("move-left");
+        });
+      }
+      if (after.length > 0) {
+        after.forEach(el => {
+          el.classList.add("move-right");
+        });
+      }
       this.$refs.element.classList.add("is-dropdown-visible");
     },
     hideDropdown(item) {
       const selectedDropdown = this.$refs.dropdownList.querySelector(
         `#${item.dataset.content}`
       );
+      const prevs = this.$refs.dropdownList.querySelectorAll(".move-left");
+      const afters = this.$refs.dropdownList.querySelectorAll(".move-right");
+      prevs.forEach(el => {
+        el.classList.remove("move-left");
+      });
+      afters.forEach(el => {
+        el.classList.remove("move-right");
+      });
       selectedDropdown.classList.remove("active");
       item.classList.remove("active");
       this.$refs.element.classList.remove("is-dropdown-visible");
