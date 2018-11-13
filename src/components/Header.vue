@@ -1,6 +1,6 @@
 <template>
   <header class="cd-morph-dropdown" ref="element">
-    <a href="#0" class="nav-trigger"
+    <a href="#0" class="nav-trigger" ref="mobileTrigger"
       >Open Nav<span aria-hidden="true"></span
     ></a>
     <nav class="main-nav" ref="mainNav">
@@ -109,29 +109,39 @@ export default {
     };
   },
   mounted() {
-    const mainNavigationItems = this.$refs.mainNav.querySelectorAll(
-      ".has-dropdown"
-    );
-    mainNavigationItems.forEach(item => {
-      item.addEventListener("mouseenter", () => {
-        this.showDropdown(item);
+    if (window.innerWidth >= 1000) {
+      const mainNavigationItems = this.$refs.mainNav.querySelectorAll(
+        ".has-dropdown"
+      );
+      mainNavigationItems.forEach(item => {
+        item.addEventListener("mouseenter", () => {
+          this.showDropdown(item);
+        });
+        item.addEventListener("mouseleave", () => {
+          if (
+            this.$refs.mainNav.querySelectorAll(".has-dropdown:hover")
+              .length === 0 &&
+            this.$refs.morphWrapper.querySelectorAll(".dropdown-list:hover")
+              .length === 0
+          )
+            this.hideDropdown(item);
+        });
       });
-      item.addEventListener("mouseleave", () => {
-        if (
-          this.$refs.mainNav.querySelectorAll(".has-dropdown:hover").length ===
-            0 &&
-          this.$refs.morphWrapper.querySelectorAll(".dropdown-list:hover")
-            .length === 0
-        )
-          this.hideDropdown(item);
-      });
-    });
 
-    this.$refs.element.addEventListener("mouseleave", () => {
-      const activeItems = this.$refs.morphWrapper.querySelectorAll(".active");
-      activeItems.forEach(item => item.classList.remove("active"));
-      this.$refs.element.classList.remove("is-dropdown-visible");
-    });
+      this.$refs.element.addEventListener("mouseleave", () => {
+        const activeItems = this.$refs.morphWrapper.querySelectorAll(".active");
+        activeItems.forEach(item => item.classList.remove("active"));
+        this.$refs.element.classList.remove("is-dropdown-visible");
+      });
+    } else {
+      this.$refs.mobileTrigger.addEventListener("click", () => {
+        if (this.$refs.element.classList.contains("nav-open")) {
+          this.$refs.element.classList.remove("nav-open");
+        } else {
+          this.$refs.element.classList.add("nav-open");
+        }
+      });
+    }
   },
   methods: {
     showDropdown(item) {
