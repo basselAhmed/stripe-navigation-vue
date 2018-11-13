@@ -103,13 +103,14 @@
 <script>
 export default {
   name: "Header",
-  date() {
-    return {
-      activeDropdown: ""
-    };
-  },
   mounted() {
-    if (window.innerWidth >= 1000) {
+    this.init();
+    // window.addEventListener("resize", () => {
+    //   this.init();
+    // });
+  },
+  methods: {
+    init() {
       const mainNavigationItems = this.$refs.mainNav.querySelectorAll(
         ".has-dropdown"
       );
@@ -133,17 +134,16 @@ export default {
         activeItems.forEach(item => item.classList.remove("active"));
         this.$refs.element.classList.remove("is-dropdown-visible");
       });
-    } else {
+
       this.$refs.mobileTrigger.addEventListener("click", () => {
+        this.reset();
         if (this.$refs.element.classList.contains("nav-open")) {
           this.$refs.element.classList.remove("nav-open");
         } else {
           this.$refs.element.classList.add("nav-open");
         }
       });
-    }
-  },
-  methods: {
+    },
     showDropdown(item) {
       const selectedDropdown = this.$refs.dropdownList.querySelector(
         `#${item.dataset.content}`
@@ -188,6 +188,19 @@ export default {
       this.$refs.dropdownBG.style[
         "transform"
       ] = `scaleX(${width}) scaleY(${height})`;
+    },
+    reset() {
+      this.$refs.dropdownList.style["transform"] = "";
+      this.$refs.dropdownList.style["width"] = "";
+      this.$refs.dropdownList.style["height"] = "";
+      this.$refs.dropdownBG.style["transform"] = "";
+      const activeDropdownItems = this.$refs.morphWrapper.querySelectorAll(
+        ".active"
+      );
+      activeDropdownItems.forEach(item => item.classList.remove("active"));
+      const activeNavItems = this.$refs.mainNav.querySelectorAll(".active");
+      activeNavItems.forEach(item => item.classList.remove("active"));
+      this.$refs.element.classList.remove("is-dropdown-visible");
     }
   }
 };
