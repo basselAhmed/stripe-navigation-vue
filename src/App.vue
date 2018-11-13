@@ -9,7 +9,7 @@
         height="80"
         viewBox="0 0 250 250"
         style="fill:#263238;color:#fff;border:0;"
-        class="absolute t0 r0"
+        class="absolute t0 r0 svg-main"
         data-jsx="1419900127"
       >
         <path
@@ -83,6 +83,18 @@ a {
   top: 0;
   right: 0;
   z-index: 9;
+}
+
+@media (max-width: 1000px) {
+  .github-corner {
+    right: auto;
+    left: 0;
+    transform: rotate(270deg);
+  }
+
+  .svg-main {
+    fill: rgb(34, 129, 128) !important;
+  }
 }
 
 @keyframes octocat-wavedata {
