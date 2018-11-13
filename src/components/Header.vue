@@ -105,9 +105,6 @@ export default {
   name: "Header",
   mounted() {
     this.init();
-    // window.addEventListener("resize", () => {
-    //   this.init();
-    // });
   },
   methods: {
     init() {
